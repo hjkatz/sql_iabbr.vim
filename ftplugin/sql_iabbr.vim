@@ -2,7 +2,7 @@
 " Language:	  SQL
 " Maintainer:	  Michael Brailsford <brailsmt at yahoo dot com>
 " Contributions:
-"		  Hari Krishna Dara <hari_vim at yahoo dot com> 
+"		  Hari Krishna Dara <hari_vim at yahoo dot com>
 "		  Zak Beck <zak dot beck at e-peopleserve dot com>
 " Last Change:	  13-Nov-2002 @ 15:56
 " Revision:	  1.5.0
@@ -238,7 +238,7 @@ inoreabbr <silent> <buffer> datetime <C-R>=SqlIab_ReplaceConditionally('datetime
 function! SqlIab_ReplaceConditionally(original, replacement)
   " only replace outside of comments or strings (which map to constant)
   let elesyn = synIDtrans(synID(line("."), col(".") - 1, 0))
-  if elesyn != hlID('Comment') && elesyn != hlID('Constant')
+  if elesyn != hlID('Comment') && elesyn != hlID('Constant') && elesyn != hlID('String')
     let word = a:replacement
   else
     let word = a:original
