@@ -1,13 +1,10 @@
 " SQL filetype plugin file
 " Language:	  SQL
-" Maintainer:	  Michael Brailsford <brailsmt at yahoo dot com>
+" Maintainer:	  Harrison Katz <hjkatz03@gmail.com>
 " Contributions:
 "		  Hari Krishna Dara <hari_vim at yahoo dot com>
 "		  Zak Beck <zak dot beck at e-peopleserve dot com>
-" Last Change:	  13-Nov-2002 @ 15:56
-" Revision:	  1.5.0
-" Download From:
-"     http://vim.sourceforge.net/script.php?script_id=305
+" Revision:	  1.6.0
 " Description:
 "   Capitalizes the SQL keywords when not typed in comments or string constants.
 "     To undo the previous immediate capitalization, press ^Xu. This will work
@@ -18,7 +15,7 @@
 "   Place it in your ftplugin directory (under user runtime directory).
 
 if exists("b:did_sql_iabbr")
-  finish
+    finish
 endif
 let b:did_sql_iabbr = 1
 
@@ -236,16 +233,20 @@ inoreabbr <silent> <buffer> output <C-R>=SqlIab_ReplaceConditionally('output', '
 inoreabbr <silent> <buffer> datetime <C-R>=SqlIab_ReplaceConditionally('datetime', 'DATETIME')<CR>
 
 function! SqlIab_ReplaceConditionally(original, replacement)
-  " only replace outside of comments or strings (which map to constant)
-  let elesyn = synIDtrans(synID(line("."), col(".") - 1, 0))
-  if elesyn != hlID('Comment') && elesyn != hlID('Constant') && elesyn != hlID('String')
-    let word = a:replacement
-  else
-    let word = a:original
-  endif
+    " only replace outside of comments or strings (which map to constant)
+    let elesyn = synIDtrans(synID(line("."), col(".") - 1, 0))
 
-  let g:UndoBuffer = a:original
-  return word
+    " if the syntax matches Comment OR Constant OR String
+    if elesyn != hlID('Comment') || elesyn != hlID('Constant') || elesyn != hlID('String')
+        " then, use the original word
+        let word = a:original
+    else
+        " else, use the replacement word
+        let word = a:replacement
+    endif
+
+    let g:UndoBuffer = a:original
+    return word
 endfunction
 
 inoremap <buffer> <C-X>u <C-W><C-R>=g:UndoBuffer<CR><C-V><Space>
