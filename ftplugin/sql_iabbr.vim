@@ -236,13 +236,13 @@ function! SqlIab_ReplaceConditionally(original, replacement)
     " only replace outside of comments or strings (which map to constant)
     let elesyn = synIDtrans(synID(line("."), col(".") - 1, 0))
 
-    " if the syntax matches Comment OR Constant OR String
+    " if the syntax does not match Comment OR Constant OR String
     if elesyn != hlID('Comment') || elesyn != hlID('Constant') || elesyn != hlID('String')
-        " then, use the original word
-        let word = a:original
-    else
         " else, use the replacement word
         let word = a:replacement
+    else
+        " then, use the original word
+        let word = a:original
     endif
 
     let g:UndoBuffer = a:original
